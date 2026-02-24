@@ -1,20 +1,24 @@
 from flask import Flask, request, jsonify
-from openai import OpenAI
+from openai import OpenAI, base_url
 import json
 import csv
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+# This loads the variables from your .env file into the system
+load_dotenv()
 
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Load configuration at startup
-with open(os.path.join(BASE_DIR, "config.json"), "r", encoding="utf-8") as f:
-    config = json.load(f)
+_api_key = os.environ.get("API_KEY")
+_base_url = os.environ.get("BASE_URL")
+_model_name = os.environ.get("MODEL_NAME") 
 
-client = OpenAI(api_key=config["api_key"], base_url=config.get("base_url"))
-
+client = OpenAI(api_key=_api_key, base_url=_base_url)
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
@@ -41,7 +45,7 @@ def chat():
 
     try:
         response = client.chat.completions.create(
-            model=config["model"],
+            model=_model_name,
             messages=messages
         )
         reply = response.choices[0].message.content
