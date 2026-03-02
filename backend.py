@@ -18,7 +18,9 @@ _api_key = os.environ.get("API_KEY")
 _base_url = os.environ.get("BASE_URL")
 _model_name = os.environ.get("MODEL_NAME") 
 
-client = OpenAI(api_key=_api_key, base_url=_base_url)
+#client = OpenAI(api_key=_api_key, base_url=_base_url)
+client = OpenAI(api_key=_api_key)
+
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
