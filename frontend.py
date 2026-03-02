@@ -6,6 +6,25 @@ st.title("Participant Chatbot")
 
 FLASK_URL = "http://127.0.0.1:5000/chat"
 
+# Define the questions based on the topic
+TOPIC_QUESTIONS = {
+    "climate": [
+        "1. The EU should continue to recognize nuclear energy as a sustainable energy source.",
+        "2. Companies should pay more for their CO2 emissions.",
+        "3. Vehicles with combustion engines should continue to be registered in the EU even after 2035."
+    ],
+    "defense": [
+        "1. The EU should move toward a common European army.",
+        "2. Germany should continue providing military support to Ukraine.",
+        "3. Ukraine should become a member of the European Union."
+    ],
+    "migration": [
+        "1. Asylum seekers must submit their application at the EU's external borders and await the outcome there.",
+        "2. Ukrainian refugees should no longer benefit from a special status.",
+        "3. Permanent border controls should be reinstated between all EU member states."
+    ]
+}
+
 # 1. Sidebar for Participant Configuration
 with st.sidebar:
     st.header("Session Setup")
@@ -26,6 +45,13 @@ if p_id is None or p_topic is None:
     st.warning("Please enter a Participant ID and select a Topic in the sidebar to begin.")
     st.stop() # Halts execution until fields are filled
 
+# 3. Display the relevant questions for the selected topic
+st.info(f"**Discussion Topics for {p_topic.capitalize()}:**")
+for question in TOPIC_QUESTIONS[p_topic]:
+    st.markdown(question)
+st.divider()
+
+# 4. Chat Interface
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
